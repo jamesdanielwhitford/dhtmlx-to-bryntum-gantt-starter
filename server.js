@@ -17,19 +17,19 @@ require("date-format-lite");
 
 // get the client
 const mysql = require("mysql2/promise");
+const db = mysql.createPool({
+  host: process.env.HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+});
 
 async function serverConfig() {
-  const db = mysql.createPool({
-    host: process.env.HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-  });
 
   app.get("/data", async (req, res) => {
     try {
       const results = await Promise.all([
-        db.query("SELECT * FROM gantt_tasks ORDER BY sortorder ASC"),
+        db.query("SELECT * FROM gantt_tasks"),
         db.query("SELECT * FROM gantt_links"),
       ]);
       const tasks = results[0][0],
@@ -194,18 +194,18 @@ async function serverConfig() {
       type: data.type,
     };
   }
-
-  function sendResponse(res, action, requestId, error) {
-    if (action == "error") console.log(error);
-
-    const result = {
-      success: action === "error" ? false : true,
-    };
-    if (requestId) result.requestId = requestId;
-
-    res.send(result);
-    return;
-  }
 }
 
 serverConfig();
+
+function sendResponse(res, action, requestId, error) {
+  if (action == "error") console.log(error);
+
+  const result = {
+    success: action === "error" ? false : true,
+  };
+  if (requestId) result.requestId = requestId;
+
+  res.send(result);
+  return;
+}

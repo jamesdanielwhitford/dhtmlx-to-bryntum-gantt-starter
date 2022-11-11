@@ -1,10 +1,19 @@
+# Setup guide
+
 Install the dependencies by running the following command:
+
+```
 npm install
+```
+
 In the server.js file, the Express server uses the MySQL2 library to connect to MySQL and run queries.
+
 The serverСonfig function runs when the server is started. It connects to the MySQL database. It also has some helper functions that are used for CRUD operations.
 The index.html file in the public folder contains the HTML, CSS, and JavaScript for our DHTMLX Gantt chart. We load the DHTMLX Gantt chart JavaScript and CSS from a CDN and initialize the Gantt chart with the init method.
+
 Run the local dev server using npm start. You’ll see a basic empty Gantt chart.
 
+## Create a .env
 Now create a .env file in the root folder and add the following lines for connecting to the MySQL database that we’ll create:
 
 HOST=localhost
@@ -15,6 +24,9 @@ DATABASE=dhtmlx
 
 Don’t forget to add the root password for your MySQL server.
 
+
+## Setup MySQL
+
 Setting up a MySQL database locally
 
 Now let’s set up a MySQL database locally.
@@ -23,7 +35,7 @@ We’ll install MySQL Server and MySQL Workbench. MySQL Workbench is a MySQL GUI
 
 Open the MySQL Workbench desktop application. Open the local instance of the MySQL Server that you configured.
 
-MySQL Workbench home page
+### MySQL Workbench home page
 
 We’ll write our MySQL queries in the query tab and execute the queries by pressing the yellow lightning bolt button.
 
@@ -31,14 +43,19 @@ Creating a MySQL database for the DHTMLX data: Adding tables and adding example 
 
 Let’s run some MySQL queries in MySQL Workbench to create, use, and populate a database for our DHTMLX Gantt. Execute the following query to create a database called dhtmlx:
 
+```sql
 CREATE DATABASE dhtmlx;
+```
 
 Run the following query so that we set our newly created database for use:
 
+```sql
 USE dhtmlx;
+```
 
 Let’s create the two tables that we’ll need for our DHTMLX Gantt chart data: gantt_tasks and gantt_links:
 
+```sql
 CREATE TABLE `gantt_tasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` varchar(255) NOT NULL,
@@ -56,9 +73,11 @@ CREATE TABLE `gantt_links` (
   `type` varchar(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
+```
 
 Now add some example tasks data to the gantt_tasks table:
 
+```sql
 INSERT INTO `gantt_tasks` VALUES ('1', 'Project #1', '2022-11-01 00:00:00',
   '5', '0.8', '0');
 INSERT INTO `gantt_tasks` VALUES ('2', 'Task #1', '2022-11-06 00:00:00',
@@ -75,7 +94,8 @@ INSERT INTO `gantt_tasks` VALUES ('7', 'Task #2.1', '2022-11-07 00:00:00',
   '5', '0.2', '3');
 INSERT INTO `gantt_tasks` VALUES ('8', 'Task #2.2', '2022-11-06 00:00:00',
   '4', '0.9', '3');
-
+```
 You’ll be able to view the example tasks data by running the following query:
-
+```sql
 SELECT * FROM gantt_tasks;
+```
