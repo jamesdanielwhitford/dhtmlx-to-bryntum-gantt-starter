@@ -77,28 +77,28 @@ async function serverConfig() {
         requestId = value;
       }
       if (key === "tasks") {
-        for (const [key2, value2] of Object.entries(value)) {
-          if (key2 === "added") {
-            value2.forEach((addObj) => taskUpdates.push(addObj));
-            value2[0].id = uuid.v4();
-            const val = await createOperation(value2[0], "tasks");
+        for (const [changeType, changeValues] of Object.entries(value)) {
+          if (changeType === "added") {
+            changeValues.forEach((addObj) => taskUpdates.push(addObj));
+            changeValues[0].id = uuid.v4();
+            const val = await createOperation(changeValues[0], "tasks");
             lastKey = val.msg;
             err = val.error;
           }
 
-          if (key2 === "updated") {
-            console.log(`updated tasks...`, value2);
-            value2.forEach((updateObj) =>
+          if (changeType === "updated") {
+            console.log(`updated tasks...`, changeValues);
+            changeValues.forEach((updateObj) =>
               taskUpdates.push(updateObj)
             );
-            const val = await updateOperation(value2, "tasks");
+            const val = await updateOperation(changeValues, "tasks");
             lastKey = val.msg;
             err = val.error;
           }
 
-          if (key2 === "removed") {
-            tasksRemoved.push(value2[0]);
-            const val = await deleteOperation(value2[0].id, "tasks");
+          if (changeType === "removed") {
+            tasksRemoved.push(changeValues[0]);
+            const val = await deleteOperation(changeValues[0].id, "tasks");
             lastKey = val.msg;
             err = val.error;
           }
@@ -106,33 +106,33 @@ async function serverConfig() {
       }
 
       if (key === "dependencies") {
-        for (const [key2, value2] of Object.entries(value)) {
-          if (key2 === "added") {
-            value2[0].id = uuid.v4();
-            value2.forEach((addObj) =>
+        for (const [changeType, changeValues] of Object.entries(value)) {
+          if (changeType === "added") {
+            changeValues[0].id = uuid.v4();
+            changeValues.forEach((addObj) =>
               dependencyUpdates.push(addObj)
             );
             const val = await createOperation(
-              value2[0],
+              changeValues[0],
               "dependencies"
             );
             lastKey = val.msg;
             err = val.error;
           }
 
-          if (key2 === "updated") {
-            value2.forEach((updateObj) =>
+          if (changeType === "updated") {
+            changeValues.forEach((updateObj) =>
               dependencyUpdates.push(updateObj)
             );
-            const val = await updateOperation(value2, "dependencies");
+            const val = await updateOperation(changeValues, "dependencies");
             lastKey = val.msg;
             err = val.error;
           }
 
-          if (key2 === "removed") {
-            dependenciesRemoved.push(value2[0]);
+          if (changeType === "removed") {
+            dependenciesRemoved.push(changeValues[0]);
             const val = await deleteOperation(
-              value2[0].id,
+              changeValues[0].id,
               "dependencies"
             );
             lastKey = val.msg;
