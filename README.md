@@ -16,11 +16,13 @@ Run the local dev server using npm start. You’ll see a basic empty Gantt chart
 ## Create a .env
 Now create a .env file in the root folder and add the following lines for connecting to the MySQL database that we’ll create:
 
+```
 HOST=localhost
 PORT=1338
 MYSQL_USER=root
 PASSWORD=password
 DATABASE=dhtmlx
+```
 
 Don’t forget to add the root password for your MySQL server.
 
